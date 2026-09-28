@@ -1,0 +1,559 @@
+/* ==========================================================================
+   RESULTS VIEW — Premium Prakriti Report
+   ========================================================================== */
+
+#view-results {
+  min-height: calc(100vh - var(--nav-h));
+  padding: var(--space-2xl) 0 var(--space-4xl);
+}
+
+/* ── Classification Hero Banner ──────────────────────────────────────── */
+.results-hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-2xl);
+  padding: var(--space-2xl) var(--space-3xl);
+  margin-bottom: var(--space-xl);
+  background: var(--grad-card);
+  border: 1px solid var(--border-subtle);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-xl);
+  align-items: center;
+}
+.results-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--grad-saffron);
+}
+.results-hero-bg-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0.5;
+  pointer-events: none;
+  background-image:
+    radial-gradient(ellipse 60% 80% at 80% 50%, rgba(249,115,22,0.08) 0%, transparent 70%);
+}
+
+.results-hero-content { display: flex; flex-direction: column; gap: var(--space-md); position: relative; z-index: 1; }
+
+.results-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--brand-saffron);
+}
+.results-prakriti-name {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.1;
+}
+.results-prakriti-devan {
+  font-family: var(--font-devan);
+  font-size: 1.3rem;
+  color: var(--text-muted);
+}
+.results-prakriti-tagline { font-size: 0.95rem; color: var(--text-secondary); max-width: 500px; line-height: 1.6; }
+
+.results-meta-pills {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+  margin-top: var(--space-xs);
+}
+
+/* Right side — confidence ring */
+.results-confidence-ring {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  flex-shrink: 0;
+  z-index: 1;
+}
+#confidenceRingSvg { width: 100%; height: 100%; }
+.ring-center-text {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.ring-pct {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.ring-label { font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; }
+
+/* ── Results Grid ────────────────────────────────────────────────────── */
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  margin-bottom: var(--space-lg);
+}
+.results-grid-wide { grid-template-columns: 1fr; }
+
+/* ── Score Distribution Card ─────────────────────────────────────────── */
+.score-card {
+  background: var(--grad-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+}
+.score-card-title {
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+.score-card-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}
+
+.dosha-score-rows { display: flex; flex-direction: column; gap: var(--space-md); }
+.dosha-score-row  { display: flex; flex-direction: column; gap: 6px; }
+
+.dscore-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.dscore-name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+.dscore-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dscore-dot.vata  { background: var(--vata-primary); box-shadow: 0 0 6px var(--vata-glow); }
+.dscore-dot.pitta { background: var(--pitta-primary); box-shadow: 0 0 6px var(--pitta-glow); }
+.dscore-dot.kapha { background: var(--kapha-primary); box-shadow: 0 0 6px var(--kapha-glow); }
+
+.dscore-pct {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.dscore-pct.vata  { color: var(--vata-primary); }
+.dscore-pct.pitta { color: var(--pitta-primary); }
+.dscore-pct.kapha { color: var(--kapha-primary); }
+
+.dscore-bar-track {
+  height: 10px;
+  background: var(--bg-elevated);
+  border-radius: 99px;
+  overflow: hidden;
+}
+.dscore-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  width: 0;
+  transition: width 1.2s var(--ease-spring);
+  position: relative;
+}
+.dscore-bar-fill.vata  { background: var(--grad-vata); }
+.dscore-bar-fill.pitta { background: var(--grad-pitta); }
+.dscore-bar-fill.kapha { background: var(--grad-kapha); }
+.dscore-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: 0; bottom: 0;
+  width: 20%;
+  background: rgba(255,255,255,0.3);
+  border-radius: 0 99px 99px 0;
+}
+
+.dscore-details {
+  display: flex;
+  gap: var(--space-md);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.dscore-details span { display: flex; align-items: center; gap: 3px; }
+
+/* ── Tridosha Triangle ───────────────────────────────────────────────── */
+.triangle-card {
+  background: var(--grad-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+#tridoshaTriangle {
+  width: 100%;
+  max-width: 320px;
+  filter: drop-shadow(0 4px 20px rgba(0,0,0,0.3));
+}
+.triangle-legend {
+  display: flex;
+  gap: var(--space-lg);
+  justify-content: center;
+}
+.triangle-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.tri-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+}
+
+/* ── Sub-Classifier Cards Row ────────────────────────────────────────── */
+.sub-classifiers-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+.sub-card {
+  background: var(--grad-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  transition: all var(--duration-base);
+}
+.sub-card:hover { border-color: var(--border-saffron); transform: translateY(-2px); }
+.sub-card-icon {
+  font-size: 1.5rem;
+  width: 44px; height: 44px;
+  background: var(--bg-glass-light);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.sub-card-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); }
+.sub-card-val {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--brand-saffron);
+}
+.sub-card-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+/* Manasika Guna Bars */
+.manas-bars { display: flex; flex-direction: column; gap: 5px; margin-top: 4px; }
+.manas-bar-row { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; }
+.manas-bar-name { width: 44px; color: var(--text-muted); }
+.manas-bar-track { flex: 1; height: 5px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
+.manas-bar-fill { height: 100%; border-radius: 99px; transition: width 1s var(--ease-spring); }
+.manas-bar-fill.sattva { background: var(--grad-jade); }
+.manas-bar-fill.rajas  { background: var(--grad-saffron); }
+.manas-bar-fill.tamas  { background: linear-gradient(90deg, #6B7280, #9CA3AF); }
+.manas-bar-pct { width: 28px; text-align: right; color: var(--text-muted); font-size: 0.7rem; }
+
+/* ── Radar Spider Chart ───────────────────────────────────────────────── */
+.radar-card {
+  background: var(--grad-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);
+}
+#radarSpiderSvg { width: 280px; height: 280px; }
+
+/* ── Recommendations ─────────────────────────────────────────────────── */
+.reco-section {
+  background: var(--grad-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+}
+.reco-tabs {
+  display: flex;
+  gap: 3px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: var(--space-xl);
+  flex-wrap: wrap;
+}
+.reco-tab {
+  flex: 1;
+  background: none;
+  border: none;
+  padding: 8px 14px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all var(--duration-base);
+  white-space: nowrap;
+}
+.reco-tab.active {
+  background: var(--brand-saffron);
+  color: white;
+  box-shadow: 0 2px 8px rgba(249,115,22,0.3);
+}
+.reco-panel { display: none; }
+.reco-panel.active {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-md);
+  animation: fadeIn 0.3s var(--ease-out);
+}
+.reco-item {
+  display: flex;
+  gap: var(--space-md);
+  align-items: flex-start;
+  background: var(--bg-glass-light);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-md);
+}
+.reco-item-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+.reco-item-content { display: flex; flex-direction: column; gap: 3px; }
+.reco-item-title { font-size: 0.88rem; font-weight: 600; color: var(--text-primary); }
+.reco-item-desc  { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+
+/* ── Explainability / Evidence ────────────────────────────────────────── */
+.evidence-section {
+  background: var(--grad-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
+  padding: var(--space-xl);
+  margin-bottom: var(--space-lg);
+}
+.evidence-filter-bar {
+  display: flex;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
+}
+.evidence-filter-btn {
+  padding: 5px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all var(--duration-fast);
+}
+.evidence-filter-btn:hover { border-color: var(--border-strong); color: var(--text-primary); }
+.evidence-filter-btn.active { border-color: var(--brand-saffron); color: var(--brand-saffron); background: rgba(249,115,22,0.08); }
+
+.evidence-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+.evidence-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.evidence-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+.evidence-table tr:last-child td { border-bottom: none; }
+.evidence-table tr:hover td { background: var(--bg-glass-light); }
+.ev-dosha-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: var(--radius-pill);
+  font-size: 0.68rem;
+  font-weight: 700;
+}
+.ev-dosha-chip.vata  { background: rgba(99,102,241,0.15); color: var(--vata-primary); }
+.ev-dosha-chip.pitta { background: rgba(249,115,22,0.15); color: var(--pitta-primary); }
+.ev-dosha-chip.kapha { background: rgba(16,185,129,0.15); color: var(--kapha-primary); }
+.ev-wt { font-family: var(--font-display); font-weight: 700; }
+.ev-ref { font-family: var(--font-devan); font-size: 0.75rem; color: var(--text-muted); }
+.ev-conf-bar { width: 60px; }
+.ev-conf-track { height: 4px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
+.ev-conf-fill  { height: 100%; border-radius: 99px; background: var(--grad-jade); }
+
+/* ── Dissonance / Analysis card ──────────────────────────────────────── */
+.analysis-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+}
+.analysis-metric {
+  background: var(--bg-glass-light);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  text-align: center;
+}
+.analysis-metric-val {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--brand-saffron);
+}
+.analysis-metric-label { font-size: 0.72rem; color: var(--text-muted); letter-spacing: 0.05em; }
+.analysis-metric-sub   { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ── Action Row ──────────────────────────────────────────────────────── */
+.results-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ── Empty / Loading States ─────────────────────────────────────────── */
+.results-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-lg);
+  padding: var(--space-4xl) var(--space-xl);
+  text-align: center;
+}
+.results-empty-icon { font-size: 4rem; opacity: 0.4; }
+.results-empty-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--text-secondary);
+}
+.results-empty-desc { color: var(--text-muted); max-width: 380px; }
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .results-grid    { grid-template-columns: 1fr; }
+  .sub-classifiers-row { grid-template-columns: 1fr 1fr; }
+  .analysis-strip  { grid-template-columns: 1fr 1fr; }
+  .results-hero    { grid-template-columns: 1fr; }
+  .results-confidence-ring { display: none; }
+  .reco-panel.active { grid-template-columns: 1fr; }
+}
+@media (max-width: 580px) {
+  .sub-classifiers-row { grid-template-columns: 1fr; }
+  .analysis-strip  { grid-template-columns: 1fr 1fr; }
+  .results-hero    { padding: var(--space-xl) var(--space-lg); }
+  .evidence-table  { font-size: 0.75rem; }
+}
+
+/* ── Dosha Score Bars ────────────────────────────────────────────────── */
+.dosha-score-rows { display: flex; flex-direction: column; gap: var(--space-lg); }
+.dosha-score-row  { display: flex; flex-direction: column; gap: 6px; }
+.dscore-label-row { display: flex; align-items: center; justify-content: space-between; font-size: 0.88rem; }
+.dscore-name  { display: flex; align-items: center; gap: var(--space-sm); font-weight: 600; color: var(--text-primary); }
+.dscore-dot   { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.dscore-dot.vata  { background: var(--vata-primary);  box-shadow: 0 0 8px var(--vata-glow); }
+.dscore-dot.pitta { background: var(--pitta-primary); box-shadow: 0 0 8px var(--pitta-glow); }
+.dscore-dot.kapha { background: var(--kapha-primary); box-shadow: 0 0 8px var(--kapha-glow); }
+.dscore-pct   { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; }
+.dscore-pct.vata  { color: var(--vata-primary); }
+.dscore-pct.pitta { color: var(--pitta-primary); }
+.dscore-pct.kapha { color: var(--kapha-primary); }
+.dscore-bar-track { height: 10px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
+.dscore-bar-fill  { height: 100%; border-radius: 99px; transition: width 1.2s var(--ease-spring); }
+.dscore-bar-fill.vata  { background: var(--grad-vata);  }
+.dscore-bar-fill.pitta { background: var(--grad-pitta); }
+.dscore-bar-fill.kapha { background: var(--grad-kapha); }
+.dscore-details { display: flex; gap: var(--space-lg); font-size: 0.78rem; color: var(--text-muted); }
+
+/* ── Evidence Table Helpers ──────────────────────────────────────────── */
+.ev-dosha-chip { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: var(--radius-pill); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; }
+.ev-dosha-chip.vata  { background: rgba(99,102,241,0.15);  color: var(--vata-primary); }
+.ev-dosha-chip.pitta { background: rgba(249,115,22,0.15);  color: var(--pitta-primary); }
+.ev-dosha-chip.kapha { background: rgba(16,185,129,0.15);  color: var(--kapha-primary); }
+.ev-wt  { font-family: var(--font-display); font-weight: 700; color: var(--brand-saffron); text-align: center; }
+.ev-ref { font-size: 0.72rem; color: var(--text-muted); font-style: italic; max-width: 140px; }
+.ev-conf-bar   { display: flex; align-items: center; }
+.ev-conf-track { width: 60px; height: 5px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
+.ev-conf-fill  { height: 100%; background: var(--grad-jade); border-radius: 99px; }
+.rule-id-cell  { font-family: var(--font-display); font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+.rule-q-cell   { font-size: 0.82rem; color: var(--text-secondary); }
+
+/* ── Sub-Classifier Cards ────────────────────────────────────────────── */
+.sub-card { background: var(--grad-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); padding: var(--space-xl); display: flex; flex-direction: column; gap: var(--space-md); }
+.sub-card-icon  { font-size: 1.8rem; }
+.sub-card-label { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--text-muted); }
+.sub-card-val   { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; color: var(--brand-saffron); }
+.sub-card-desc  { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; }
+
+/* ── Manas Bars ──────────────────────────────────────────────────────── */
+.manas-bars   { display: flex; flex-direction: column; gap: 6px; }
+.manas-bar-row { display: flex; align-items: center; gap: var(--space-sm); font-size: 0.8rem; }
+.manas-bar-name  { width: 50px; color: var(--text-muted); font-weight: 600; flex-shrink: 0; }
+.manas-bar-track { flex: 1; height: 6px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; }
+.manas-bar-fill  { height: 100%; border-radius: 99px; transition: width 1s var(--ease-spring); }
+.manas-bar-fill.sattva { background: linear-gradient(90deg, #34D399, #10B981); }
+.manas-bar-fill.rajas  { background: linear-gradient(90deg, #FB923C, #F97316); }
+.manas-bar-fill.tamas  { background: linear-gradient(90deg, #818CF8, #6366F1); }
+.manas-bar-pct { width: 36px; text-align: right; font-size: 0.75rem; color: var(--text-muted); }
+
+/* ── Recommendations Panel ───────────────────────────────────────────── */
+.reco-section { background: var(--grad-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-xl); padding: var(--space-xl); display: flex; flex-direction: column; gap: var(--space-lg); }
+.reco-tabs { display: flex; gap: var(--space-sm); border-bottom: 1px solid var(--border-subtle); padding-bottom: var(--space-md); flex-wrap: wrap; }
+.reco-tab { background: none; border: none; padding: 7px 16px; border-radius: var(--radius-md); font-size: 0.85rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all var(--duration-fast); }
+.reco-tab:hover  { color: var(--text-secondary); background: var(--bg-glass-light); }
+.reco-tab.active { background: var(--bg-elevated); color: var(--brand-saffron); border: 1px solid var(--border-saffron); }
+.reco-panel      { display: none; flex-direction: column; gap: var(--space-md); }
+.reco-panel.active { display: flex; }
+.reco-item { display: flex; gap: var(--space-md); align-items: flex-start; padding: var(--space-md); background: var(--bg-glass-light); border-radius: var(--radius-md); border: 1px solid var(--border-subtle); transition: border-color var(--duration-fast); }
+.reco-item:hover { border-color: var(--border-saffron); }
+.reco-item-icon  { font-size: 1.3rem; flex-shrink: 0; padding-top: 2px; }
+.reco-item-title { font-size: 0.9rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
+.reco-item-desc  { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.55; }
+
+/* ── Triangle Legend ─────────────────────────────────────────────────── */
+.triangle-legend      { display: flex; justify-content: center; gap: var(--space-xl); padding-top: var(--space-md); }
+.triangle-legend-item { display: flex; align-items: center; gap: 6px; font-size: 0.8rem; color: var(--text-muted); }
+.tri-legend-dot       { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Results Actions ─────────────────────────────────────────────────── */
+.results-actions { display: flex; gap: var(--space-md); flex-wrap: wrap; justify-content: center; padding: var(--space-2xl) 0; border-top: 1px solid var(--border-subtle); margin-top: var(--space-xl); }
+
+/* ── Results Empty State ─────────────────────────────────────────────── */
+.results-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--space-4xl) var(--space-xl); gap: var(--space-lg); min-height: 60vh; }
+.results-empty-icon  { font-size: 4rem; }
+.results-empty-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--text-primary); }
+.results-empty-desc  { color: var(--text-secondary); max-width: 420px; line-height: 1.65; }

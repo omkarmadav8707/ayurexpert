@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AyurExpert — Tridosha Prakriti Classification | IKS in Computational Systems</title>
+  <meta name="description" content="A deterministic forward-chaining rule-based expert system mapping Ayurvedic Tridosha observations into explainable Prakriti classifications. IKS in Computational Systems — Topic 4.">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/assessment.css">
+  <link rel="stylesheet" href="css/results.css">
+  <link rel="stylesheet" href="css/academic.css">
+  <link rel="stylesheet" href="css/methodology.css">
+</head>
+<body>
+
+  <!-- ══════════════════ SITE HEADER ══════════════════ -->
+  <header class="site-header" id="siteHeader">
+    <div class="container nav-inner">
+      <div class="brand-wrapper" id="brandLogo" data-nav="home" role="button" tabindex="0" aria-label="Go to Home">
+        <div class="brand-logo-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/>
+            <path d="M12 3a9 9 0 0 0 0 18"/>
+            <path d="M12 7a5 5 0 0 1 0 10"/>
+            <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+          </svg>
+        </div>
+        <div class="brand-titles">
+          <span class="brand-name">AyurExpert</span>
+          <span class="brand-tagline">IKS Computational System</span>
+        </div>
+      </div>
+
+      <ul class="nav-links" id="navLinks" role="list">
+        <li><button class="nav-link-btn active" id="nav-home" data-nav="home">Home</button></li>
+        <li><button class="nav-link-btn" id="nav-assessment" data-nav="assessment">Assessment</button></li>
+        <li><button class="nav-link-btn" id="nav-results" data-nav="results">Results</button></li>
+        <li><button class="nav-link-btn" id="nav-academic" data-nav="academic">Course Submission</button></li>
+        <li><button class="nav-link-btn" id="nav-methodology" data-nav="methodology">Methodology</button></li>
+        <li><button class="nav-link-btn" id="nav-doshas" data-nav="doshas">Encyclopedia</button></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="icon-btn theme-toggle-btn" id="themeToggleBtn" aria-label="Toggle theme" title="Toggle light/dark theme">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <button class="icon-btn mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ══════════════════ VIEW: HOME ══════════════════ -->
+    <section class="view-container active" id="view-home">
+
+      <!-- Hero -->
+      <div class="hero-section">
+        <div class="hero-bg"></div>
+        <div class="container">
+          <div class="hero-inner">
+            <div class="hero-content">
+              <span class="hero-badge">
+                <span class="live-dot"></span>
+                IKS in Computational Systems &bull; Topic #4 &bull; Rule-Based Expert System
+              </span>
+
+              <h1 class="hero-title">
+                Ayurvedic Classification as a<br>
+                <span class="line-accent">Rule-Based Expert System</span>
+              </h1>
+
+              <p class="hero-devanagari">आयुर्वेदिक प्रकृति वर्गीकरण — त्रिदोष विशेषज्ञ प्रणाली</p>
+
+              <p class="hero-description">
+                A transparent, deterministic forward-chaining inference engine grounded in classical
+                Indian Knowledge Systems. Maps 24-point somatic &amp; behavioral observations into
+                auditable Tridosha Prakriti profiles with full explainability.
+              </p>
+
+              <div class="hero-cta-group">
+                <button class="btn btn-primary btn-xl" id="heroStartBtn" data-nav="assessment">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3l14 9-14 9V3z"/></svg>
+                  Begin 24-Point Assessment
+                </button>
+                <button class="btn btn-outline btn-xl" data-nav="academic">
+                  View Course Submission
+                </button>
+                <button class="btn btn-ghost btn-xl" data-nav="methodology">
+                  Inspect 96 Rules
+                </button>
+              </div>
+
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat-val">24</span>
+                  <span class="hero-stat-label">Assessment Questions</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat-val">96</span>
+                  <span class="hero-stat-label">Production Rules</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat-val">7</span>
+                  <span class="hero-stat-label">Prakriti Profiles</span>
+                </div>
+                <div class="hero-stat">
+                  <span class="hero-stat-val">16</span>
+                  <span class="hero-stat-label">Formal Test Cases</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Dosha Wheel (desktop) -->
+            <div class="hero-visual">
+              <div class="dosha-wheel-wrap">
+                <div class="orb orb-saffron"></div>
+                <svg id="doshaWheelSvg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Background ring -->
+                  <circle cx="150" cy="150" r="130" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <circle cx="150" cy="150" r="100" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <circle cx="150" cy="150" r="70"  fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                  <!-- Dosha arcs - filled dynamically by JS -->
+                  <g id="wheelArcs"></g>
+                  <!-- Center -->
+                  <circle cx="150" cy="150" r="38" fill="rgba(17,24,39,0.9)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                  <text x="150" y="145" text-anchor="middle" fill="#F97316" font-family="Cinzel,serif" font-size="10" font-weight="700">AyurExpert</text>
+                  <text x="150" y="160" text-anchor="middle" fill="rgba(255,255,255,0.35)" font-family="Noto Serif Devanagari,serif" font-size="11">त्रिदोष</text>
+                </svg>
+                <div class="floating-dosha-cards">
+                  <div class="fdosha-card"><span class="fdosha-dot pitta"></span>Pitta — 🔥 Fire + Water</div>
+                  <div class="fdosha-card"><span class="fdosha-dot vata"></span>Vata — 💨 Air + Ether</div>
+                  <div class="fdosha-card"><span class="fdosha-dot kapha"></span>Kapha — 💧 Earth + Water</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Info Strip -->
+      <div class="container">
+        <div class="info-strip">
+          <div class="info-strip-card">
+            <div class="info-strip-val">3</div>
+            <div class="info-strip-label">Dosha Tiers (Anatomical, Metabolic, Cognitive)</div>
+          </div>
+          <div class="info-strip-card">
+            <div class="info-strip-val">CF</div>
+            <div class="info-strip-label">Certainty Factor Combination (Asymptotic)</div>
+          </div>
+          <div class="info-strip-card">
+            <div class="info-strip-val">10</div>
+            <div class="info-strip-label">Granular Prakriti Classes (Directional + Sama)</div>
+          </div>
+          <div class="info-strip-card">
+            <div class="info-strip-val">∀</div>
+            <div class="info-strip-label">Fully Explainable — Every Decision Auditable</div>
+          </div>
+        </div>
+
+        <!-- Feature Cards -->
+        <div class="features-section">
+          <div class="text-center">
+            <p class="section-eyebrow">Core Capabilities</p>
+            <h2 class="section-title" style="text-align:center">Three Pillars of the IKS Expert System</h2>
+          </div>
+
+          <div class="features-grid">
+            <div class="feature-card vata-card">
+              <div class="feature-icon vata-icon">💨</div>
+              <div class="feature-title">Vata — Kinetic Intelligence</div>
+              <p class="feature-desc">Air &amp; Ether energies govern movement, neural conduction, respiration, and creative cognition. The engine assesses 8 Vata-dominant observational domains with 1.25× somatic weighting.</p>
+              <span class="feature-tag">वात • Vayu + Akasha</span>
+            </div>
+            <div class="feature-card pitta-card">
+              <div class="feature-icon pitta-icon">🔥</div>
+              <div class="feature-title">Pitta — Thermal Intelligence</div>
+              <p class="feature-desc">Fire &amp; Water energies govern metabolism, thermogenesis, enzymatic digestion, sharp intellect, and skin radiance. Tikshnagni sub-classifier accurately maps metabolic fire state.</p>
+              <span class="feature-tag">पित्त • Agni + Jala</span>
+            </div>
+            <div class="feature-card kapha-card">
+              <div class="feature-icon kapha-icon">💧</div>
+              <div class="feature-title">Kapha — Structural Intelligence</div>
+              <p class="feature-desc">Earth &amp; Water energies govern structural cohesion, joint lubrication, immune resilience, and emotional grounding. Mandagni and Mridu Koshtha sub-classifiers provide deeper insight.</p>
+              <span class="feature-tag">कफ • Prithvi + Jala</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Academic Callout Banner -->
+        <div class="academic-banner">
+          <div class="academic-banner-content">
+            <span class="academic-banner-label">🎓 Course Submission Ready</span>
+            <div class="academic-banner-title">IKS in Computational Systems — Topic 4 Project</div>
+            <div class="academic-banner-sub">Formal problem statement · Algorithm specification · 16 test cases · Full rule base · Classical Sanskrit references</div>
+          </div>
+          <div class="academic-banner-actions">
+            <button class="btn btn-primary btn-md" data-nav="academic">Open Submission</button>
+            <button class="btn btn-outline btn-md" data-nav="methodology">View Rule Base</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer>
+        <div class="footer-inner">
+          <div class="footer-devan">ॐ तत् सत्</div>
+          <div class="footer-brand">AyurExpert — Ayurvedic Classification Expert System</div>
+          <div class="footer-copy">IKS in Computational Systems Project · Grounded in Charaka Samhita &amp; Ashtanga Hridaya · Ministry of AYUSH Ayusoft</div>
+        </div>
+      </footer>
+    </section>
+
+    <!-- ══════════════════ VIEW: ASSESSMENT ══════════════════ -->
+    <section class="view-container" id="view-assessment">
+      <div class="container">
+
+        <!-- Progress Header -->
+        <div class="assessment-header-bar">
+          <div class="assessment-meta">
+            <span class="assessment-step-label">Prashna Pariksha — Observational Assessment</span>
+            <span class="assessment-step-count">Question <span id="currentQNum">1</span> of <span id="totalQNum">24</span></span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width:4%"></div>
+          </div>
+          <div class="progress-segments" id="progressSegments"></div>
+        </div>
+
+        <div class="assessment-layout">
+
+          <!-- Main Question Panel -->
+          <div>
+            <!-- Question Card -->
+            <div class="question-card" id="questionCard">
+              <div class="question-meta-row">
+                <span class="q-domain-tag" id="qDomainTag">Physical Constitution</span>
+                <span class="q-tier-tag" id="qTierTag">Anatomical Invariant</span>
+                <span class="q-num-badge" id="qNumBadge">Q01 / 24</span>
+              </div>
+              <p class="question-sanskrit" id="qSanskritTerm">Sharira Sanhanana</p>
+              <h2 class="question-text" id="questionText">Loading question...</h2>
+              <div class="question-hint" id="questionHint"></div>
+
+              <div class="options-grid" id="optionsGrid">
+                <!-- Rendered by JS -->
+              </div>
+
+              <div class="question-nav">
+                <div class="q-nav-left">
+                  <button class="btn btn-ghost btn-sm" id="prevBtn" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+                    Previous
+                  </button>
+                </div>
+                <button class="q-nav-skip" id="skipBtn">Skip question</button>
+                <div class="q-nav-right">
+                  <button class="btn btn-primary btn-sm" id="nextBtn">
+                    Next
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                  </button>
+                  <button class="btn btn-jade btn-sm" id="submitBtn" style="display:none">
+                    View My Prakriti →
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Completion Banner -->
+            <div class="completion-banner" id="completionBanner">
+              <div class="completion-emblem">🏺</div>
+              <h2 class="completion-title">Assessment Complete!</h2>
+              <p class="completion-sub">All 24 observational domains have been recorded. Your Tridosha Prakriti profile is ready for inference.</p>
+              <button class="btn btn-primary btn-xl" id="viewResultsBtn">
+                Reveal My Prakriti Profile →
+              </button>
+              <button class="btn btn-ghost btn-md" id="restartBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+                Restart Assessment
+              </button>
+            </div>
+          </div>
+
+          <!-- Dosha Tracker Sidebar -->
+          <aside class="dosha-tracker" id="doshaTracker">
+            <div class="tracker-header">
+              <span class="tracker-title">Live Dosha Tally</span>
+              <span class="tracker-confidence" id="trackerConfidence">—%</span>
+            </div>
+
+            <div class="tracker-dosha-bars">
+              <div class="tracker-bar-row">
+                <div class="tracker-bar-label">
+                  <span class="tracker-bar-name">💨 Vata</span>
+                  <span class="tracker-bar-pct vata" id="trackerVataPct">—</span>
+                </div>
+                <div class="tracker-bar-track">
+                  <div class="tracker-bar-fill vata" id="trackerVataBar" style="width:33%"></div>
+                </div>
+              </div>
+              <div class="tracker-bar-row">
+                <div class="tracker-bar-label">
+                  <span class="tracker-bar-name">🔥 Pitta</span>
+                  <span class="tracker-bar-pct pitta" id="trackerPittaPct">—</span>
+                </div>
+                <div class="tracker-bar-track">
+                  <div class="tracker-bar-fill pitta" id="trackerPittaBar" style="width:33%"></div>
+                </div>
+              </div>
+              <div class="tracker-bar-row">
+                <div class="tracker-bar-label">
+                  <span class="tracker-bar-name">💧 Kapha</span>
+                  <span class="tracker-bar-pct kapha" id="trackerKaphaPct">—</span>
+                </div>
+                <div class="tracker-bar-track">
+                  <div class="tracker-bar-fill kapha" id="trackerKaphaBar" style="width:33%"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mini triangle -->
+            <div class="tracker-triangle-wrap">
+              <svg id="trackerTriangleSvg" viewBox="0 0 140 120" xmlns="http://www.w3.org/2000/svg">
+                <!-- Triangle -->
+                <polygon points="70,8 130,108 10,108" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1.5"/>
+                <!-- Vertex labels -->
+                <text x="70" y="5" text-anchor="middle" fill="#FB923C" font-size="8" font-family="Cinzel,serif">Pitta</text>
+                <text x="4" y="116" text-anchor="start" fill="#818CF8" font-size="8" font-family="Cinzel,serif">Vata</text>
+                <text x="136" y="116" text-anchor="end" fill="#34D399" font-size="8" font-family="Cinzel,serif">Kapha</text>
+                <!-- Point marker -->
+                <circle id="trackerPoint" cx="70" cy="72" r="5" fill="#F97316" stroke="rgba(255,255,255,0.3)" stroke-width="1.5">
+                  <animate attributeName="r" values="5;6.5;5" dur="2s" repeatCount="indefinite"/>
+                </circle>
+              </svg>
+            </div>
+
+            <div class="tracker-current-leaning">
+              <div class="tracker-leaning-label">Current Leaning</div>
+              <div class="tracker-leaning-val" id="trackerLeaning">Awaiting answers…</div>
+            </div>
+
+            <!-- Question Palette -->
+            <div>
+              <div class="q-palette-header">
+                <span>Question Map</span>
+                <span id="answeredCount">0/24</span>
+              </div>
+              <div class="q-palette-grid" id="qPaletteGrid"></div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ VIEW: RESULTS ══════════════════ -->
+    <section class="view-container" id="view-results">
+      <div class="container">
+
+        <!-- Empty state (shown when no results) -->
+        <div class="results-empty" id="resultsEmpty">
+          <div class="results-empty-icon">🏺</div>
+          <h2 class="results-empty-title">No Assessment Completed Yet</h2>
+          <p class="results-empty-desc">Complete the 24-point Prashna Pariksha to generate your personalised Tridosha Prakriti report.</p>
+          <button class="btn btn-primary btn-lg mt-lg" data-nav="assessment">Start Assessment →</button>
+        </div>
+
+        <!-- Results Content (shown after inference) -->
+        <div id="resultsContent" style="display:none">
+
+          <!-- Hero Banner -->
+          <div class="results-hero" id="resultsHero">
+            <div class="results-hero-bg-glow"></div>
+            <div class="results-hero-content">
+              <span class="results-label">Your Tridosha Prakriti Classification</span>
+              <h1 class="results-prakriti-name" id="resultsPrakritiName">—</h1>
+              <p class="results-prakriti-devan" id="resultsPrakritiDevan"></p>
+              <p class="results-prakriti-tagline" id="resultsPrakritiTagline"></p>
+              <div class="results-meta-pills" id="resultsMetaPills"></div>
+            </div>
+            <div class="results-confidence-ring">
+              <svg id="confidenceRingSvg" viewBox="0 0 130 130" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="65" cy="65" r="56" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="10"/>
+                <circle id="confidenceArc" cx="65" cy="65" r="56" fill="none"
+                  stroke="url(#ringGrad)" stroke-width="10" stroke-linecap="round"
+                  stroke-dasharray="352" stroke-dashoffset="352"
+                  transform="rotate(-90 65 65)"
+                  style="transition: stroke-dashoffset 1.4s cubic-bezier(0.4,0,0.2,1)"/>
+                <defs>
+                  <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#F97316"/>
+                    <stop offset="100%" stop-color="#FBBF24"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+              <div class="ring-center-text">
+                <span class="ring-pct" id="ringPct">—%</span>
+                <span class="ring-label">Confidence</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Analysis Strip -->
+          <div class="analysis-strip" id="analysisStrip">
+            <div class="analysis-metric">
+              <div class="analysis-metric-val" id="metricFiredRules">—</div>
+              <div class="analysis-metric-label">Rules Fired</div>
+              <div class="analysis-metric-sub">of 96 production rules</div>
+            </div>
+            <div class="analysis-metric">
+              <div class="analysis-metric-val" id="metricExecTime">—</div>
+              <div class="analysis-metric-label">Inference Time</div>
+              <div class="analysis-metric-sub">milliseconds</div>
+            </div>
+            <div class="analysis-metric">
+              <div class="analysis-metric-val" id="metricDissonance">—</div>
+              <div class="analysis-metric-label">Dissonance Index (Ξ)</div>
+              <div class="analysis-metric-sub">Vata–Kapha polar conflict</div>
+            </div>
+            <div class="analysis-metric">
+              <div class="analysis-metric-val" id="metricMargin">—</div>
+              <div class="analysis-metric-label">Classification Margin</div>
+              <div class="analysis-metric-sub">adjusted score gap</div>
+            </div>
+          </div>
+
+          <!-- Score + Triangle Row -->
+          <div class="results-grid">
+            <!-- Score Distribution -->
+            <div class="score-card">
+              <div class="score-card-title">Dosha Score Distribution</div>
+              <div class="dosha-score-rows" id="doshaScoreRows">
+                <!-- Rendered by JS -->
+              </div>
+            </div>
+
+            <!-- Tridosha Triangle -->
+            <div class="triangle-card">
+              <div class="score-card-title">Tridosha Barycentric Map</div>
+              <svg id="tridoshaTriangle" viewBox="0 0 380 330" xmlns="http://www.w3.org/2000/svg">
+                <!-- Grid -->
+                <defs>
+                  <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+                </defs>
+                <!-- Triangle fill + outline -->
+                <polygon points="190,20 340,280 40,280" fill="rgba(249,115,22,0.03)" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+                <!-- Inner grid lines -->
+                <line x1="190" y1="20" x2="40" y2="280" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                <line x1="190" y1="20" x2="340" y2="280" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                <line x1="40" y1="280" x2="340" y2="280" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+                <!-- 1/3 lines -->
+                <line x1="157" y1="100" x2="223" y2="280" stroke="rgba(255,255,255,0.04)" stroke-width="0.8"/>
+                <line x1="223" y1="100" x2="90" y2="280" stroke="rgba(255,255,255,0.04)" stroke-width="0.8"/>
+                <!-- Vertex Glow Circles -->
+                <circle cx="190" cy="20" r="18" fill="rgba(249,115,22,0.12)" stroke="rgba(249,115,22,0.25)" stroke-width="1"/>
+                <circle cx="40" cy="280" r="18" fill="rgba(99,102,241,0.12)" stroke="rgba(99,102,241,0.25)" stroke-width="1"/>
+                <circle cx="340" cy="280" r="18" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.25)" stroke-width="1"/>
+                <!-- Vertex Labels -->
+                <text x="190" y="25" text-anchor="middle" fill="#FB923C" font-family="Cinzel,serif" font-weight="700" font-size="11">🔥</text>
+                <text x="190" y="10" text-anchor="middle" fill="#FB923C" font-family="Cinzel,serif" font-size="9">Pitta</text>
+                <text x="40" y="285" text-anchor="middle" fill="#818CF8" font-family="Cinzel,serif" font-weight="700" font-size="11">💨</text>
+                <text x="40" y="300" text-anchor="middle" fill="#818CF8" font-family="Cinzel,serif" font-size="9">Vata</text>
+                <text x="340" y="285" text-anchor="middle" fill="#34D399" font-family="Cinzel,serif" font-weight="700" font-size="11">💧</text>
+                <text x="340" y="300" text-anchor="middle" fill="#34D399" font-family="Cinzel,serif" font-size="9">Kapha</text>
+                <!-- Barycentric Point (set by JS) -->
+                <circle id="barycentricPoint" cx="190" cy="150" r="8" fill="#F97316" stroke="white" stroke-width="2" filter="url(#glow)">
+                  <animate attributeName="r" values="8;10;8" dur="2.5s" repeatCount="indefinite"/>
+                </circle>
+              </svg>
+              <div class="triangle-legend">
+                <div class="triangle-legend-item"><span class="tri-legend-dot" style="background:#818CF8"></span>Vata</div>
+                <div class="triangle-legend-item"><span class="tri-legend-dot" style="background:#FB923C"></span>Pitta</div>
+                <div class="triangle-legend-item"><span class="tri-legend-dot" style="background:#34D399"></span>Kapha</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Sub-Classifier Cards -->
+          <div class="sub-classifiers-row" id="subClassifiers">
+            <div class="sub-card">
+              <div class="sub-card-icon">🔥</div>
+              <div class="sub-card-label">Agni State (Digestive Fire)</div>
+              <div class="sub-card-val" id="agniVal">—</div>
+              <div class="sub-card-desc" id="agniDesc">Evaluating metabolic fire state…</div>
+            </div>
+            <div class="sub-card">
+              <div class="sub-card-icon">🌿</div>
+              <div class="sub-card-label">Koshtha (Bowel Motility)</div>
+              <div class="sub-card-val" id="koshthaVal">—</div>
+              <div class="sub-card-desc" id="koshthaDesc">Evaluating bowel motility…</div>
+            </div>
+            <div class="sub-card">
+              <div class="sub-card-icon">🧠</div>
+              <div class="sub-card-label">Manasika Gunas (Psychic Balance)</div>
+              <div class="sub-card-val" id="manasVal">—</div>
+              <div class="manas-bars" id="manasBars">
+                <div class="manas-bar-row"><span class="manas-bar-name">Sattva</span><div class="manas-bar-track"><div class="manas-bar-fill sattva" id="sattvBar" style="width:33%"></div></div><span class="manas-bar-pct" id="sattvPct">33%</span></div>
+                <div class="manas-bar-row"><span class="manas-bar-name">Rajas</span><div class="manas-bar-track"><div class="manas-bar-fill rajas" id="rajasBar" style="width:33%"></div></div><span class="manas-bar-pct" id="rajasPct">33%</span></div>
+                <div class="manas-bar-row"><span class="manas-bar-name">Tamas</span><div class="manas-bar-track"><div class="manas-bar-fill tamas" id="tamasBar" style="width:33%"></div></div><span class="manas-bar-pct" id="tamasPct">33%</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Radar + Recommendations -->
+          <div class="results-grid">
+            <!-- Radar Spider -->
+            <div class="radar-card">
+              <div class="score-card-title">6-Axis Phenotypic Profile (Radar)</div>
+              <svg id="radarSpiderSvg" viewBox="0 0 280 280" xmlns="http://www.w3.org/2000/svg">
+                <g id="radarGrid"></g>
+                <polygon id="radarShape" points="" fill="rgba(249,115,22,0.15)" stroke="#F97316" stroke-width="2" stroke-linejoin="round"/>
+                <g id="radarLabels"></g>
+                <g id="radarDots"></g>
+              </svg>
+            </div>
+
+            <!-- Recommendations Tabs -->
+            <div class="reco-section">
+              <div class="score-card-title">Personalised Recommendations</div>
+              <div class="reco-tabs" id="recoTabs">
+                <button class="reco-tab active" data-reco="diet">Diet</button>
+                <button class="reco-tab" data-reco="lifestyle">Lifestyle</button>
+                <button class="reco-tab" data-reco="yoga">Yoga &amp; Herbs</button>
+              </div>
+              <div class="reco-panel active" id="recoPanelDiet" data-reco-panel="diet">
+                <!-- Rendered by JS -->
+              </div>
+              <div class="reco-panel" id="recoPanelLifestyle" data-reco-panel="lifestyle"></div>
+              <div class="reco-panel" id="recoPanelYoga" data-reco-panel="yoga"></div>
+            </div>
+          </div>
+
+          <!-- Evidence / Explainability Table -->
+          <div class="evidence-section">
+            <div class="score-card-title">Evidence Audit — Fired Production Rules</div>
+            <div class="evidence-filter-bar">
+              <button class="evidence-filter-btn active" data-ef="ALL">All Rules</button>
+              <button class="evidence-filter-btn" data-ef="VATA">💨 Vata Rules</button>
+              <button class="evidence-filter-btn" data-ef="PITTA">🔥 Pitta Rules</button>
+              <button class="evidence-filter-btn" data-ef="KAPHA">💧 Kapha Rules</button>
+              <button class="evidence-filter-btn" data-ef="TIER1">Tier 1 (1.25×)</button>
+            </div>
+            <div style="overflow-x:auto">
+              <table class="evidence-table" id="evidenceTable">
+                <thead>
+                  <tr>
+                    <th>Rule ID</th>
+                    <th>Domain</th>
+                    <th>Observation</th>
+                    <th>Dosha Effect</th>
+                    <th>Adj. Weight</th>
+                    <th>Confidence</th>
+                    <th>Classical Reference</th>
+                  </tr>
+                </thead>
+                <tbody id="evidenceTbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="results-actions">
+            <button class="btn btn-primary btn-md" data-nav="assessment" id="retakeBtn">Retake Assessment</button>
+            <button class="btn btn-outline btn-md" data-nav="academic">View Course Submission</button>
+            <button class="btn btn-ghost btn-md" id="printResultsBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+              Print / Export
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ VIEW: ACADEMIC ══════════════════ -->
+    <section class="view-container" id="view-academic">
+      <div class="container container-sm">
+
+        <div class="academic-header">
+          <div class="academic-institute-logo">॥ आयुर्वेद विशेषज्ञ प्रणाली ॥</div>
+          <div class="academic-university">Indira Gandhi National Open University (IGNOU) / Institute of Classical Studies</div>
+          <div class="academic-divider-ornament">❧</div>
+          <h1 class="academic-paper-title">Ayurvedic Classification as a Rule-Based Expert System<br>(Tridosha &amp; Prakriti Inference Engine)</h1>
+          <p class="academic-paper-subtitle">Demonstrating the Isomorphism of Classical Indian Knowledge Systems with Computational Expert System Architecture</p>
+          <div class="academic-meta-grid">
+            <div class="academic-meta-item"><span class="academic-meta-label">Course</span><span class="academic-meta-val">IKS in Computational Systems</span></div>
+            <div class="academic-meta-item"><span class="academic-meta-label">Topic Number</span><span class="academic-meta-val">Topic 4 (Individual)</span></div>
+            <div class="academic-meta-item"><span class="academic-meta-label">Problem Framing</span><span class="academic-meta-val">IKS Concept as CS Concept</span></div>
+            <div class="academic-meta-item"><span class="academic-meta-label">CS Concept</span><span class="academic-meta-val">Rule-Based Expert System (Forward Chaining)</span></div>
+            <div class="academic-meta-item"><span class="academic-meta-label">IKS Concept</span><span class="academic-meta-val">Tridosha Prakriti Classification</span></div>
+            <div class="academic-meta-item"><span class="academic-meta-label">Primary Sources</span><span class="academic-meta-val">Charaka Samhita · Ashtanga Hridaya · AYUSH Ayusoft</span></div>
+          </div>
+        </div>
+
+        <!-- Problem Statement -->
+        <div class="paper-section">
+          <div class="paper-section-title"><span class="paper-section-num">§1</span> Problem Statement</div>
+          <div class="paper-body">
+            <p><strong>IKS Concept as CS Concept:</strong> Classical Ayurvedic Tridosha theory, which classifies individuals into one of seven Prakriti constitutional profiles based on the relative dominance of Vata, Pitta, and Kapha doshas, is structurally isomorphic to a <span class="highlight">Production-Rule Expert System</span> performing deterministic forward-chaining inference on a knowledge base.</p>
+            <p>The Ayurvedic physician (Vaidya) conducts <strong>Prashna Pariksha</strong> (structured patient interview) and <strong>Darshana Pariksha</strong> (visual observation), generating a set of observable facts (Lakshanas). These facts are then matched against a rule base derived from classical texts (Charaka Samhita, Ashtanga Hridaya) to arrive at a Prakriti classification.</p>
+            <p>This paper implements this process computationally as a <span class="highlight">deterministic forward-chaining rule-based expert system</span> with 96 production rules, 24 observational domains, Certainty Factor combination, tiered domain weighting, and three sub-classifiers (Agni, Koshtha, Manas).</p>
+          </div>
+        </div>
+
+        <!-- Algorithm Specification -->
+        <div class="paper-section">
+          <div class="paper-section-title"><span class="paper-section-num">§2</span> Formal Algorithm Specification</div>
+          <div class="paper-body">
+            <p>The inference engine implements the following formal algorithm:</p>
+          </div>
+          <div class="algorithm-block">
+<span class="algo-keyword">ALGORITHM</span> <span class="algo-func">AyurvedicPrakritiInference</span>(<span class="algo-var">O</span>: ObservationVector) → PrakritiClass<br>
+<span class="algo-comment">// O = set of (questionId, answerId) pairs from Prashna/Darshana Pariksha</span><br>
+<br>
+<span class="algo-keyword">INPUT:</span> <span class="algo-var">O</span> = {(q₁,a₁), (q₂,a₂), ..., (q₂₄,a₂₄)}   <span class="algo-comment">// 24 observational facts</span><br>
+<span class="algo-keyword">KNOWLEDGE BASE:</span> <span class="algo-var">R</span> = {r₁, r₂, ..., r₉₆}              <span class="algo-comment">// 96 production rules</span><br>
+<span class="algo-keyword">THRESHOLDS:</span> dualGap=<span class="algo-num">6.0</span>, balancedGap=<span class="algo-num">4.0</span>       <span class="algo-comment">// classification margins</span><br>
+<br>
+<span class="algo-keyword">PHASE 1</span> — <span class="algo-func">Evidence Accumulation (Forward Chaining)</span>:<br>
+&nbsp;&nbsp;<span class="algo-keyword">FOR EACH</span> rule rᵢ <span class="algo-keyword">IN</span> <span class="algo-var">R</span>:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="algo-keyword">IF</span> rᵢ.condition ∈ <span class="algo-var">O</span>  <span class="algo-comment">// condition matches observation</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="algo-keyword">THEN</span> FIRE(rᵢ):<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;adjWeight ← rᵢ.weight × tierMultiplier[rᵢ.tier]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;score[rᵢ.dosha] += adjWeight<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;CF[rᵢ.dosha] ← CF[rᵢ.dosha] + rᵢ.CF × (1 − CF[rᵢ.dosha])  <span class="algo-comment">// asymptotic combination</span><br>
+<br>
+<span class="algo-keyword">PHASE 2</span> — <span class="algo-func">Score Normalization</span>:<br>
+&nbsp;&nbsp;total ← score[VATA] + score[PITTA] + score[KAPHA]<br>
+&nbsp;&nbsp;pct[d] ← score[d] / total × 100  ∀d ∈ {VATA, PITTA, KAPHA}<br>
+<br>
+<span class="algo-keyword">PHASE 3</span> — <span class="algo-func">Classification Policy</span>:<br>
+&nbsp;&nbsp;ranked ← SORT({VATA, PITTA, KAPHA}, score, DESC)<br>
+&nbsp;&nbsp;<span class="algo-keyword">IF</span> max(score) − min(score) ≤ balancedGap → <span class="algo-keyword">RETURN</span> SAMA<br>
+&nbsp;&nbsp;<span class="algo-keyword">ELIF</span> ranked[0].score − ranked[1].score ≤ dualGap → <span class="algo-keyword">RETURN</span> DVANDVAJA(ranked[0], ranked[1])<br>
+&nbsp;&nbsp;<span class="algo-keyword">ELSE</span> → <span class="algo-keyword">RETURN</span> EKADOSHAJA(ranked[0])<br>
+<br>
+<span class="algo-keyword">OUTPUT:</span> {prakritiClass, doshaScores, certaintFactors, firedRules, executionTime}
+          </div>
+        </div>
+
+        <!-- Test Suite -->
+        <div class="test-suite-section">
+          <div class="score-card-title">§3 Formal Verification Test Suite</div>
+          <div class="test-run-btn-row">
+            <div class="test-summary-pills">
+              <span class="test-pill pass" id="testPassCount">— Passed</span>
+              <span class="test-pill fail" id="testFailCount">— Failed</span>
+              <span class="test-pill pend" id="testPendCount">— Pending</span>
+            </div>
+            <button class="btn btn-primary btn-md" id="runTestsBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 3l14 9-14 9V3z"/></svg>
+              Run All Tests
+            </button>
+          </div>
+
+          <div style="overflow-x:auto">
+            <table class="test-table" id="testTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Test Name</th>
+                  <th>Category</th>
+                  <th>Expected</th>
+                  <th>Actual</th>
+                  <th>Status</th>
+                  <th>Margin</th>
+                </tr>
+              </thead>
+              <tbody id="testTbody"></tbody>
+            </table>
+          </div>
+
+          <div class="test-run-progress" id="testRunProgress">
+            <div class="test-run-log" id="testRunLog"></div>
+          </div>
+        </div>
+
+        <!-- References -->
+        <div class="paper-section">
+          <div class="paper-section-title"><span class="paper-section-num">§4</span> Primary Classical References</div>
+          <div class="paper-body">
+            <p><strong>1.</strong> Charaka Samhita — Vimanasthana Ch. 8 (<em>Rogabhinana Vimana</em>): Eight-fold patient examination (Ashtavidha Pariksha) including Prashna Pariksha methodology.</p>
+            <p><strong>2.</strong> Ashtanga Hridaya Sutrasthana 1.11-12 (Vagbhata): Canonical definition of Tridosha qualities — <em class="font-devan" style="font-family:var(--font-devan)">तत्र रूक्षो लघुः शीतो खरः सूक्ष्मश्चलोऽनिलः</em></p>
+            <p><strong>3.</strong> Ministry of AYUSH — Ayusoft National Standardized Prakriti Assessment Questionnaire (2020): Basis for 24 observational domains and dual-tier weighting methodology.</p>
+            <p><strong>4.</strong> Sushruta Samhita — Sharir Sthana Ch. 4: Constitutional classification criteria for Ekadoshaja, Dvandvaja, and Samadoshaja Prakriti.</p>
+          </div>
+          <div class="dosha-classical-sutra" style="margin-top:var(--space-lg)">
+            दोषाः एव हि सर्वेषां रोगाणां कारणं मतम् — The Doshas alone are considered the cause of all diseases (and constitutions). — Charaka Samhita Sutrasthana 18.48
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════ VIEW: METHODOLOGY ══════════════════ -->
+    <section class="view-container" id="view-methodology">
+      <div class="container">
+        <div class="mb-2xl">
+          <p class="section-eyebrow">Formal Specification</p>
+          <h1 class="section-title">Production Rule Base &amp; Methodology</h1>
+          <p class="section-subtitle">All 96 production rules derived from classical Ayurvedic texts. Search, filter, and inspect every rule's condition, effect, weight, and Sanskrit reference.</p>
+        </div>
+
+        <!-- Methodology Cards -->
+        <div class="methodology-cards">
+          <div class="methodology-card">
+            <div class="methodology-card-icon">⚖️</div>
+            <div class="methodology-card-title">Tiered Domain Weighting</div>
+            <div class="methodology-card-body">Three tiers modulate evidence credibility:<br>
+              <ul>
+                <li><strong>Tier 1 — Somatic Invariants (1.25×):</strong> Frame, skin, hair, eyes, joints — life-long constitutional markers with highest epistemic weight.</li>
+                <li><strong>Tier 2 — Physiological Core (1.0×):</strong> Digestion, metabolism, sleep, temperature, thirst — functional physiological indicators.</li>
+                <li><strong>Tier 3 — Neuro-Cognitive (0.85×):</strong> Speech, memory, stress, personality — behaviorally influenced, lower baseline weight.</li>
+              </ul>
+            </div>
+          </div>
+          <div class="methodology-card">
+            <div class="methodology-card-icon">🔗</div>
+            <div class="methodology-card-title">Certainty Factor (CF) Combination</div>
+            <div class="methodology-card-body">
+              Asymptotic Certainty Factor accumulation prevents overconfidence from redundant evidence:<br>
+              <code>CF_new = CF_old + CF_rule × (1 − CF_old)</code><br><br>
+              Modeled after MYCIN's CF calculus. Ensures CF asymptotically approaches 1.0 rather than exceeding it from multiple confirming rules.
+            </div>
+          </div>
+          <div class="methodology-card">
+            <div class="methodology-card-icon">🏆</div>
+            <div class="methodology-card-title">10-Class Directional Prakriti</div>
+            <div class="methodology-card-body">
+              Classification resolves into one of 10 granular categories:<br>
+              <ul>
+                <li><strong>3 Ekadoshaja</strong> (single dominant): VATA, PITTA, KAPHA</li>
+                <li><strong>6 Directional Dvandvaja</strong> (dual, ordered): V-P, P-V, V-K, K-V, P-K, K-P</li>
+                <li><strong>1 Samadoshaja</strong>: Sama (balanced tridosha)</li>
+              </ul>
+            </div>
+          </div>
+          <div class="methodology-card">
+            <div class="methodology-card-icon">🧪</div>
+            <div class="methodology-card-title">Sub-Classifiers</div>
+            <div class="methodology-card-body">
+              Three independent sub-classifiers provide deeper insight:<br>
+              <ul>
+                <li><strong>Agni Sub-Classifier:</strong> SAMAGNI · TIKSHNAGNI · VISHAMAGNI · MANDAGNI</li>
+                <li><strong>Koshtha Sub-Classifier:</strong> KRURA (Vata) · MRIDU (Pitta) · MADHYAMA (Kapha)</li>
+                <li><strong>Manasika Guna Classifier:</strong> SATTVA% · RAJAS% · TAMAS% with dominant Guna</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rule Browser -->
+        <div class="rule-browser mt-xl" id="ruleBrowser">
+          <div class="rule-browser-toolbar">
+            <div class="rule-search-wrap">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+              <input type="text" class="rule-search-input" id="ruleSearchInput" placeholder="Search by question, domain, or reference…" aria-label="Search rules">
+            </div>
+            <div class="rule-filter-chips">
+              <button class="rule-filter-chip all-chip active" data-rf="ALL">All</button>
+              <button class="rule-filter-chip vata-chip" data-rf="VATA">💨 Vata</button>
+              <button class="rule-filter-chip pitta-chip" data-rf="PITTA">🔥 Pitta</button>
+              <button class="rule-filter-chip kapha-chip" data-rf="KAPHA">💧 Kapha</button>
+            </div>
+            <span class="rule-count-badge" id="ruleCountBadge">96 rules</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table class="rule-table" id="ruleTable">
+              <thead>
+                <tr>
+                  <th data-sort="id">Rule ID <span class="sort-icon">↕</span></th>
+                  <th data-sort="domain">Domain <span class="sort-icon">↕</span></th>
+                  <th>Condition (Observation)</th>
+                  <th data-sort="dosha">Dosha <span class="sort-icon">↕</span></th>
+                  <th data-sort="weight">Weight <span class="sort-icon">↕</span></th>
+                  <th data-sort="tier">Tier <span class="sort-icon">↕</span></th>
+                  <th>Sanskrit Reference</th>
+                </tr>
+              </thead>
+              <tbody id="ruleTbody"></tbody>
+            </table>
+          </div>
+          <div class="rule-table-pagination" id="rulePagination">
+            <span id="rulePageInfo">Showing 1–20 of 96</span>
+            <div class="pagination-btns" id="paginationBtns"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ VIEW: DOSHA ENCYCLOPEDIA ══════════════════ -->
+    <section class="view-container" id="view-doshas">
+      <div class="container">
+        <div class="mb-2xl">
+          <p class="section-eyebrow">Classical Knowledge Base</p>
+          <h1 class="section-title">Dosha Encyclopedia</h1>
+          <p class="section-subtitle">Deep reference on all three Doshas and seven classical Prakriti profiles grounded in Charaka Samhita and Ashtanga Hridaya.</p>
+        </div>
+
+        <div class="dosha-tabs-nav">
+          <button class="dosha-tab-btn active vata-tab" data-dosha-tab="VATA">💨 Vata</button>
+          <button class="dosha-tab-btn pitta-tab" data-dosha-tab="PITTA">🔥 Pitta</button>
+          <button class="dosha-tab-btn kapha-tab" data-dosha-tab="KAPHA">💧 Kapha</button>
+        </div>
+
+        <div class="dosha-panel active" id="doshaPanel-VATA">
+          <div class="dosha-profile-card">
+            <div class="dosha-profile-header">
+              <div class="dosha-emblem vata-emblem">💨</div>
+              <div class="dosha-profile-name">Vata</div>
+              <div class="dosha-profile-devan">वात</div>
+            </div>
+            <div class="dosha-elements" id="vataElements"></div>
+            <div class="dosha-qualities-list" id="vataQualities"></div>
+            <div class="dosha-classical-sutra" id="vataSutra"></div>
+          </div>
+          <div class="dosha-info-panels" id="vataPanels"></div>
+        </div>
+
+        <div class="dosha-panel" id="doshaPanel-PITTA">
+          <div class="dosha-profile-card">
+            <div class="dosha-profile-header">
+              <div class="dosha-emblem pitta-emblem">🔥</div>
+              <div class="dosha-profile-name">Pitta</div>
+              <div class="dosha-profile-devan">पित्त</div>
+            </div>
+            <div class="dosha-elements" id="pittaElements"></div>
+            <div class="dosha-qualities-list" id="pittaQualities"></div>
+            <div class="dosha-classical-sutra" id="pittaSutra"></div>
+          </div>
+          <div class="dosha-info-panels" id="pittaPanels"></div>
+        </div>
+
+        <div class="dosha-panel" id="doshaPanel-KAPHA">
+          <div class="dosha-profile-card">
+            <div class="dosha-profile-header">
+              <div class="dosha-emblem kapha-emblem">💧</div>
+              <div class="dosha-profile-name">Kapha</div>
+              <div class="dosha-profile-devan">कफ</div>
+            </div>
+            <div class="dosha-elements" id="kaphaElements"></div>
+            <div class="dosha-qualities-list" id="kaphaQualities"></div>
+            <div class="dosha-classical-sutra" id="kaphaSutra"></div>
+          </div>
+          <div class="dosha-info-panels" id="kaphaPanels"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
